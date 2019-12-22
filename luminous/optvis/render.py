@@ -28,7 +28,7 @@ def visualize(tensor, net, offset, objective=None,
     if optimizer is None:
         optimizer = torch.optim.Adam([tensor], lr=0.05)
     if objective is None:
-        objective = objectives.channel(offset)
+        objective = objectives.channel()
 
     net.train(False)
     tensor.requires_grad_(True)
@@ -43,7 +43,7 @@ def visualize(tensor, net, offset, objective=None,
     for i in iterable:
         optimizer.zero_grad()
         net(transforms(tensor))
-        loss = obj(_layer_output, device=device)
+        loss = objective(offset, _layer_output, device=device)
         loss.backward()
         optimizer.step()
 

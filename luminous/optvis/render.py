@@ -30,6 +30,9 @@ def visualize(tensor, net, offset, objective=None,
     if objective is None:
         objective = objectives.channel()
 
+    if '__iter__' not in dir(blur):
+        blur = (blur, blur)
+
     net.train(False)
     tensor.requires_grad_(True)
 
@@ -41,6 +44,8 @@ def visualize(tensor, net, offset, objective=None,
         iterable = tqdm(iterable)
 
     for i in iterable:
+        sigma = blur[0] + ((blur[1] - blur[0]) * i) / iters
+
         optimizer.zero_grad()
         net(transforms(tensor))
         loss = objective(offset, _layer_output, device=device)
@@ -48,8 +53,8 @@ def visualize(tensor, net, offset, objective=None,
         optimizer.step()
 
         with torch.no_grad():
-            if blur > 0:
-                tensor.set_(transform.blur(tensor, blur))
+            if sigma > 0:
+                tensor.set_(transform.blur(tensor, sigma))
             tensor.clamp_(0, 1)
 
         grad_rms = (tensor.grad**2).mean().sqrt()

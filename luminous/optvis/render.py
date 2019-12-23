@@ -13,6 +13,20 @@ def setup_hook(layer):
 
     layer.register_forward_hook(hook)
 
+class no_ReLU:
+    def __enter__(self):
+        self.old_relu = F.relu
+        F.relu = lambda x, inplace=False: x
+    def __exit__(self, type, value, traceback):
+        F.relu = self.old_relu
+
+def remove_ReLU(layer):
+    old_forward = layer.forward
+    def forward(x):
+        with no_ReLU():
+            return old_forward(x)
+    layer.forward = forward
+
 def create_vis_tensor(size, batch_n=1, mean=0.5, std=0.05, device=None):
     tensor = torch.randn(batch_n, 3, size, size, device=device) * std + mean
     return tensor

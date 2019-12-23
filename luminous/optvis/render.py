@@ -55,12 +55,11 @@ def visualize(tensor, net, offset, objective=None,
         with torch.no_grad():
             if sigma > 0:
                 tensor.set_(transform.blur(tensor, sigma))
-            tensor.clamp_(0, 1)
 
         grad_rms = (tensor.grad**2).mean().sqrt()
 
         if i+1 in thresholds:
-            vis = tensor_to_images(tensor)
+            vis = tensor_to_images(tensor.sigmoid())
             images.append(vis)
             print(i+1, grad_rms)
             if render:

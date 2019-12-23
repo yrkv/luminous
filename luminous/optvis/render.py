@@ -18,7 +18,7 @@ def create_vis_tensor(size, batch_n=1, mean=0.5, std=0.05, device=None):
     return tensor
 
 def visualize(tensor, net, offset, objective=None,
-              transforms=(lambda x: x), thresholds=(256,), blur=0.34,
+              transforms=(lambda x: x), thresholds=(256,), blur=0.,
               progress=True, render=True, optimizer=None, device=None):
     if progress:
         from tqdm import tqdm_notebook as tqdm

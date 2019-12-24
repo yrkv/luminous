@@ -36,7 +36,7 @@ def _linear_decorelate_color(rgb):
     t_flat = rgb.permute(0,2,3, 1).reshape(-1, 3)
 
     color_correlation_normalized = color_correlation_svd_sqrt / max_norm_svd_sqrt
-    t_flat = torch.matmul(t_flat, color_correlation_normalized.T)
+    t_flat = torch.matmul(t_flat, color_correlation_normalized.T.to(t_flat.device))
 
     t = t_flat.view(batch, h, w, 3).permute(0, 3, 1, 2)
     return t
@@ -109,7 +109,8 @@ class FFT(Param):
         scale = 1.0 / np.maximum(freqs, 1.0 / max(w, h)) ** decay_power
         scale *= np.sqrt(w * h)
         scale = scale[None, None, :, :, None]
-        scaled_spectrum_t = scale * spectrum_t
+        scale_t = scale.to(spectrum_t.device)
+        scaled_spectrum_t = scale_t * spectrum_t
 
         # convert complex scaled spectrum to shape (ch, h, w) image tensor
         image_t = torch.irfft(scaled_spectrum_t, 2)

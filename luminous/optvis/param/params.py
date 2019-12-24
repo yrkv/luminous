@@ -96,7 +96,7 @@ class FFT(Param):
         init_val = np.random.normal(size=init_val_size, scale=sd).astype(np.float32)
         
         spectrum_t = torch.from_numpy(init_val)
-        return spectrum_t.to(device), torch.from_numpy(freqs, device=device)
+        return spectrum_t.to(device), torch.from_numpy(freqs).to(device)
 
     # ported from Lucid
     def fft_param_to_image(shape, spectrum_t, freqs, decay_power=1):

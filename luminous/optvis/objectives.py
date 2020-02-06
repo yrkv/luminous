@@ -12,7 +12,7 @@ def channel():
 def neuron():
     def inner(offset, layer_output, device):
         batch_n = len(layer_output)
-        middle = activations.shape[-1] // 2
+        middle = layer_output.shape[-1] // 2
         activations = layer_output[:, offset:offset+batch_n, middle, middle]
         I = torch.eye(batch_n, device=device)
         loss = -(activations * I).mean()

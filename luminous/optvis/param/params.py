@@ -106,7 +106,7 @@ class FFT(Param):
         # Scale the spectrum. First normalize energy, then scale by the square-root
         # of the number of pixels to get a unitary transformation.
         # This allows to use similar leanring rates to pixel-wise optimisation.
-        scale = 1.0 / np.maximum(freqs, 1.0 / max(w, h)) ** decay_power
+        scale = 1.0 / np.maximum(freqs.cpu(), 1.0 / max(w, h)) ** decay_power
         scale *= np.sqrt(w * h)
         scale = scale[None, None, :, :, None]
         scale_t = scale.to(spectrum_t.device)

@@ -8,6 +8,7 @@ _layer_output = None
 _hook = None
 
 def setup_hook(layer):
+    global _hook
     if _hook is not None:
         _hook.remove()
 

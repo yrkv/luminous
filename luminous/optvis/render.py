@@ -5,13 +5,17 @@ import numpy as np
 from luminous.optvis import transform, objectives
 
 _layer_output = None
+_hook = None
 
 def setup_hook(layer):
+    if _hook is not None:
+        _hook.remove()
+
     def hook(module, input, output):
         global _layer_output
         _layer_output = output
 
-    return layer.register_forward_hook(hook)
+    _hook = layer.register_forward_hook(hook)
 
 class no_ReLU:
     def __enter__(self):

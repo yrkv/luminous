@@ -72,7 +72,7 @@ def visualize(param, net, offset, objective=None,
         if i+1 in thresholds:
             vis = param_to_images(param)
             images.append(vis)
-            print(i+1, grad_rms)
+            print(i+1, grad_rms, loss)
             if render:
                 display(vis)
 

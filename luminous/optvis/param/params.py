@@ -112,6 +112,8 @@ class FFT(Param):
         scale_t = scale.to(spectrum_t.device)
         scaled_spectrum_t = scale_t * spectrum_t
 
+        return scaled_spectrum_t
+
         # convert complex scaled spectrum to shape (ch, h, w) image tensor
         image_t = torch.irfft(scaled_spectrum_t, 2)
 

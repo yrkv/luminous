@@ -38,14 +38,14 @@ def create_vis_tensor(size, batch_n=1, mean=0.5, std=0.05, device=None):
 
 def visualize(param, net, offset, objective=None,
               transforms=(lambda x: x), thresholds=(256,),
-              progress=True, render=True, optimizer=None, device=None):
+              progress=True, render=True, optimizer=None, device=None, lr=0.05):
     if progress:
         from tqdm import tqdm_notebook as tqdm
     if render:
         from IPython.display import display
 
     if optimizer is None:
-        optimizer = torch.optim.Adam([param.tensor], lr=0.05)
+        optimizer = torch.optim.Adam([param.tensor], lr=lr)
     if objective is None:
         objective = objectives.channel()
 
